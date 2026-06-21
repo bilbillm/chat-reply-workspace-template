@@ -1,0 +1,16 @@
+logs/
+.tmp_crops/
+
+# Keep only the reusable person template in public repos by default.
+people/*
+!people/_template/
+!people/_template/**
+
+# Local exports, screenshots, and raw chat dumps.
+raw/
+screenshots/
+exports/
+*.jpg
+*.jpeg
+*.png
+*.webp
