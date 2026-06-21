@@ -1,5 +1,6 @@
 logs/
 .tmp_crops/
+tmp/
 
 # Keep only the reusable person template in public repos by default.
 people/*
@@ -14,3 +15,7 @@ exports/
 *.jpeg
 *.png
 *.webp
+
+# Public template assets.
+!assets/
+!assets/**
