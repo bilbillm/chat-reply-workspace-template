@@ -6,6 +6,43 @@ A local workspace for organizing conversations, understanding relationship posit
 
 <img src="assets/talktrace-logo.png" alt="TalkTrace logo" width="160">
 
+## Installation
+
+Copy this page URL, paste it into the LLM / AI / Agent on your computer, and say:
+
+```text
+Hey, help me install this on my computer:
+https://github.com/bilbillm/TalkTrace
+```
+
+If it asks how, send this too:
+
+```text
+Put the real working copy in my Documents directory and name it TalkTrace-workspace.
+Do not make me fill real chat notes inside the public GitHub clone.
+After installation, read START_HERE.md and AGENTS.md, then help me initialize my first chat object.
+```
+
+The agent can run:
+
+```powershell
+$repo = Join-Path $env:TEMP "TalkTrace"
+if (Test-Path $repo) { Remove-Item -LiteralPath $repo -Recurse -Force }
+git clone https://github.com/bilbillm/TalkTrace $repo
+powershell -ExecutionPolicy Bypass -File "$repo\scripts\install-talktrace.ps1" `
+  -Destination "$HOME\Documents\TalkTrace-workspace"
+```
+
+macOS / Linux:
+
+```bash
+repo="$(mktemp -d)/TalkTrace"
+git clone https://github.com/bilbillm/TalkTrace "$repo"
+bash "$repo/scripts/install-talktrace.sh" "$HOME/TalkTrace-workspace"
+```
+
+After installation, enter the workspace and ask the agent to read `START_HERE.md` and `AGENTS.md`.
+
 If you often think, "I do not know how to chat," "I cannot tell what the other person wants," "replying feels exhausting," or "I want to sound more natural," this project is for you.
 
 TalkTrace does not ask you to hand every sentence over to AI. It turns chatting into something you can observe, review, practice, and iterate. You provide chat context and your own first reaction; the assistant helps organize person-specific notes, read the current situation, draft a few replies that still sound like you, and update local files after you confirm what should be persisted.
@@ -55,6 +92,11 @@ But psychoanalysis here is not a diagnostic tool. Every "unconscious profile" en
 ├── README.en.md
 ├── assets/
 │   └── talktrace-logo.png
+├── scripts/
+│   ├── install-talktrace.ps1
+│   ├── install-talktrace.sh
+│   ├── new-person.ps1
+│   └── new-person.sh
 ├── me/
 │   ├── profile.md
 │   ├── style.md
@@ -71,9 +113,9 @@ But psychoanalysis here is not a diagnostic tool. Every "unconscious profile" en
 
 ## How To Use
 
-1. Create your own repository from this template, or download it locally.
+1. Use the installation commands above to create a local private workspace, or create your own private repository from this template.
 2. Keep your real working copy private or local-only.
-3. Copy `people/_template/` to `people/<alias>/`. Use an alias, not a real name.
+3. Run `scripts/new-person.ps1 -Alias <alias>` to copy `people/_template/` to `people/<alias>/`. Use an alias, not a real name.
 4. Give the assistant the new chat context, your first reaction, and the direction you want for the relationship.
 5. Let the assistant read `me/` plus the relevant `people/<alias>/` files before drafting reply suggestions.
 6. Choose or edit one reply. After you receive feedback, let the assistant update that person's `cases.md`, and update `profile.md`, `style.md`, or `unconscious.md` when needed.

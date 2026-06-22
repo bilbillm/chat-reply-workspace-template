@@ -6,6 +6,43 @@
 
 <img src="assets/talktrace-logo.png" alt="TalkTrace logo" width="160">
 
+## 安装
+
+复制这个网页的网址粘贴给你电脑上的 LLM / AI / Agent，然后说：
+
+```text
+嘿，帮我在我的电脑上装这个东西：
+https://github.com/bilbillm/TalkTrace
+```
+
+如果它问怎么装，把这段也发给它：
+
+```text
+把真实使用的工作区放在我的文档目录下，目录名用 TalkTrace-workspace。
+不要让我直接在 GitHub clone 下来的公开仓库里填写真实聊天资料。
+安装后先读 START_HERE.md 和 AGENTS.md，再帮我初始化第一个聊天对象。
+```
+
+agent 可以直接执行：
+
+```powershell
+$repo = Join-Path $env:TEMP "TalkTrace"
+if (Test-Path $repo) { Remove-Item -LiteralPath $repo -Recurse -Force }
+git clone https://github.com/bilbillm/TalkTrace $repo
+powershell -ExecutionPolicy Bypass -File "$repo\scripts\install-talktrace.ps1" `
+  -Destination "$HOME\Documents\TalkTrace-workspace"
+```
+
+macOS / Linux：
+
+```bash
+repo="$(mktemp -d)/TalkTrace"
+git clone https://github.com/bilbillm/TalkTrace "$repo"
+bash "$repo/scripts/install-talktrace.sh" "$HOME/TalkTrace-workspace"
+```
+
+安装完成后，进入工作区并让 agent 读 `START_HERE.md` 和 `AGENTS.md`。
+
 如果你经常觉得“我是不是不会聊天”“我不知道对方到底怎么想”“回复别人好累”“我想变得自然一点”，这个项目是给你准备的。
 
 TalkTrace 不是让你把每一句话都交给 AI 代写，而是把聊天这件事变成可以观察、复盘、练习、迭代的过程。你把聊天记录和自己的感受交给助手，助手帮你整理对象档案、分析当下语境、起草几条更像你的回复，并在你确认后更新本地文档。
@@ -55,6 +92,11 @@ TalkTrace 使用“总画像 + 对象隔离”的结构。
 ├── README.en.md
 ├── assets/
 │   └── talktrace-logo.png
+├── scripts/
+│   ├── install-talktrace.ps1
+│   ├── install-talktrace.sh
+│   ├── new-person.ps1
+│   └── new-person.sh
 ├── me/
 │   ├── profile.md
 │   ├── style.md
@@ -71,9 +113,9 @@ TalkTrace 使用“总画像 + 对象隔离”的结构。
 
 ## 怎么使用
 
-1. 从这个模板创建你自己的仓库，或者直接下载到本地。
+1. 用上面的安装命令生成一个本地私用工作区，或者从这个模板创建你自己的私有仓库。
 2. 保持真实使用仓库为私有仓库或纯本地目录。
-3. 复制 `people/_template/` 为 `people/<对象代号>/`，对象代号不要用真实姓名。
+3. 用 `scripts/new-person.ps1 -Alias <对象代号>` 复制 `people/_template/` 为 `people/<对象代号>/`，对象代号不要用真实姓名。
 4. 把新的聊天记录、你的第一感受、你想要的关系方向发给助手。
 5. 让助手读取 `me/` 和对应对象的 `people/<对象代号>/`，再生成回复建议。
 6. 你选择或修改一条回复；收到反馈后，让助手更新对应对象的 `cases.md`，必要时更新 `profile.md`、`style.md` 或 `unconscious.md`。
